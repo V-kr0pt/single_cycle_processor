@@ -1,0 +1,110 @@
+$date
+	Thu Aug  8 15:53:10 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module register_testbench $end
+$var wire 8 ! q_out [7:0] $end
+$var reg 1 " clk $end
+$var reg 8 # d_in [7:0] $end
+$var reg 1 $ load $end
+$var reg 1 % reset $end
+$scope module test_register $end
+$var wire 1 " clk $end
+$var wire 8 & d_in [7:0] $end
+$var wire 1 $ load $end
+$var wire 1 % reset $end
+$var reg 8 ' q_out [7:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx '
+b0 &
+0%
+0$
+b0 #
+0"
+bx !
+$end
+#5
+1"
+#10
+b0 !
+b0 '
+0"
+1%
+#15
+1"
+#20
+0"
+0%
+#25
+1"
+#30
+0"
+b10101010 #
+b10101010 &
+1$
+#35
+b10101010 !
+b10101010 '
+1"
+#40
+0"
+0$
+#45
+1"
+#50
+0"
+b11001100 #
+b11001100 &
+#55
+1"
+#60
+0"
+1$
+#65
+b11001100 !
+b11001100 '
+1"
+#70
+0"
+0$
+#75
+1"
+#80
+b0 !
+b0 '
+0"
+1%
+#85
+1"
+#90
+0"
+0%
+#95
+1"
+#100
+0"
+#105
+1"
+#110
+0"
+#115
+1"
+#120
+0"
+#125
+1"
+#130
+0"
+#135
+1"
+#140
+0"

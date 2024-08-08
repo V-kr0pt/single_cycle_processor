@@ -52,7 +52,7 @@ def assemble(assembly_code):
 def main():
     machine_code = [] # List to store the machine code
     # Read the assembly code from a file or user input
-    with open("assembly_code.txt") as file:
+    with open("code.asm") as file:
         for line in file:
             assembly_code = line.strip()
             # Call the assemble function to convert the assembly code to machine code          

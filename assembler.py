@@ -1,3 +1,5 @@
+import sys
+
 def assemble(assembly_code):
     '''
     This function takes an assembly code as input and returns the machine code
@@ -49,10 +51,21 @@ def assemble(assembly_code):
 
     return machine_code
 
-def main():
+def main(args):
+
+    if len(args) == 1:
+        print("Please provide the assembly code as an argument")
+        return
+    elif len(args) == 2:
+        asm_file = args[1]
+    else:
+        print("Please provide only one argument")
+        return
+
+
     machine_code = [] # List to store the machine code
     # Read the assembly code from a file or user input
-    with open("code.asm") as file:
+    with open(asm_file) as file:
         for line in file:
             assembly_code = line.strip()
             # Call the assemble function to convert the assembly code to machine code          
@@ -66,4 +79,5 @@ def main():
     
 
 if __name__ == "__main__":
-    main()
+    args = sys.argv
+    main(args)

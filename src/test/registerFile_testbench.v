@@ -2,6 +2,7 @@ module registerFile_testbench();
 
     reg clk;
     reg reset;
+    reg reset_all;
     reg load;
     reg [7:0] d_in;
     reg [2:0] address;
@@ -13,6 +14,7 @@ module registerFile_testbench();
     FileRegister test_register (
         .clk(clk),
         .reset(reset),
+        .reset_all(reset_all),
         .load(load),
         .address(address), // endereço do registrador
         .d_in(d_in),
@@ -29,14 +31,15 @@ module registerFile_testbench();
 
         // Inicializa os sinais
         clk = 0;
+        reset_all = 0;
         reset = 0;
         load = 0;
         address = 0;
         d_in = 0;
 
-        // Aplica reset
-        #10 reset = 1;
-        #10 reset = 0;       
+        // Aplica reset_all
+        #10 reset_all = 1;
+        #10 reset_all = 0;       
 
         // Teste 1: Carrega um valor em cada registrador
         $display("Test 1...");
@@ -50,28 +53,37 @@ module registerFile_testbench();
         end
         $display("Test 1 done!");
 
+        
         $display("Test 2...");
-        // Teste 2: Coloca outro valor na entrada sem alterar o load
+        // Teste 2: Reseta o endereço de um registrador
+        address = 3'b000;   
+        reset = 1;
+        #10 reset = 0;
+        #10; //espera pra ver o resultado
+        $display("Address: %d, q_out: %b, reset: %b", address, q_out, reset);
+        $display("Test 2 done!");
+
+        $display("Test 3...");
+        // Teste 3: Coloca outro valor na entrada sem alterar o load
         for (i = 0; i < 8; i++) begin
             #10 d_in = 8'b11001100;
         end
-        $display("Test 2 done!");
+        $display("Test 3 done!");
 
-
-        $display("Test 3...");
-        // Teste 3: Altera o load e varia o endereço para alterar o valor do registrador
+        $display("Test 4...");
+        // Teste 4: Altera o load e varia o endereço para alterar o valor do registrador
         for (i = 0; i < 8; i++) begin
             address = i[2:0];
             #10 load = 1;
         end
         #10 load = 0;
-        $display("Test 3 done!");
-
-        $display("Test 4...");
-        // Teste 4: Aplica reset (deve zerar o registrador mesmo sem estar na borda positiva do clock)
-        #10 reset = 1;
-        #10 reset = 0;
         $display("Test 4 done!");
+
+        $display("Test 5...");
+        // Teste 5: Aplica reset_all (deve zerar o registrador mesmo sem estar na borda positiva do clock)
+        #10 reset_all = 1;
+        #10 reset_all = 0;
+        $display("Test 5 done!");
 
         $display("Test finished! :D");
 

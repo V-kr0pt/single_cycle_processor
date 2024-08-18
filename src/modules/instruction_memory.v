@@ -24,5 +24,3 @@ module instruction_memory #(
 endmodule
 
 
-// Comentario Adicional: Nesse modelo baseado no trabalho do grupo anterior, a memoria ram está sendo representada como uma matriz
-// dentro desse mesmo modulo da memoria de intrução. Resta assim, testar como seria acessar outro modulo externo que seria a RAM a parte.

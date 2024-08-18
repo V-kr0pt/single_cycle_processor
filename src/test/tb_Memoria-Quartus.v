@@ -1,57 +1,97 @@
 module tb_Microprocessador_ciclo_unico;
 
     reg clk;
-    reg reset;
-    reg [2:0] endereco;
+    reg mem_write;
+    reg mem_read;
+    reg [5:0] endereco;
     reg [7:0] valor_escrita;
-    reg leitura;
-    reg escrita;
     wire [7:0] valor_saida;
 
-    // Instanciação do módulo
+    // Instancia o módulo
     Microprocessador_ciclo_unico uut (
         .clk(clk),
-        .reset(reset),
+        .mem_write(mem_write),
+        .mem_read(mem_read),
         .endereco(endereco),
         .valor_escrita(valor_escrita),
-        .leitura(leitura),
-        .escrita(escrita),
         .valor_saida(valor_saida)
     );
 
-    // Gerador de clock
+    // Gera o clock
     always #5 clk = ~clk;
 
     initial begin
         // Inicializa os sinais
         clk = 0;
-        reset = 1;
-        endereco = 3'b000;
-        valor_escrita = 8'b0;
-        leitura = 0;
-        escrita = 0;
+        mem_write = 0;
+        mem_read = 0;
+        endereco = 0;
+        valor_escrita = 0;
+
+        // Escreve valores em diferentes endereços
         #10;
-
-        // Desativa o reset
-        reset = 0;
+        endereco = 6'd10;
+        valor_escrita = 8'hA5;
+        mem_write = 1;
         #10;
+        mem_write = 0;
 
-        // Teste de escrita
-        endereco = 3'b001;
-        valor_escrita = 8'b10101010;
-        escrita = 1;
         #10;
-        escrita = 0;
-
-        // Teste de leitura
-        leitura = 1;
+        endereco = 6'd20;
+        valor_escrita = 8'h3C;
+        mem_write = 1;
         #10;
+        mem_write = 0;
 
-        // Exibir resultado da leitura
-        $display("Endereco: %b, Valor Lido: %b", endereco, valor_saida);
-        leitura = 0;
+        #10;
+        endereco = 6'd30;
+        valor_escrita = 8'h7E;
+        mem_write = 1;
+        #10;
+        mem_write = 0;
 
-        // Finalizar simulação
+        // Lê os valores dos endereços escritos
+        #10;
+        endereco = 6'd10;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        #10;
+        endereco = 6'd20;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        #10;
+        endereco = 6'd30;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        // Verifica a leitura de outros endereços não inicializados
+        #10;
+        endereco = 6'd15;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        #10;
+        endereco = 6'd25;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        #10;
+        endereco = 6'd35;
+        mem_read = 1;
+        #10;
+        mem_read = 0;
+
+        // Simulação continua por mais tempo para observar o comportamento
+        #50;
+
+        // Finaliza a simulação
         $finish;
     end
 

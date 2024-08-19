@@ -1,4 +1,4 @@
-module tb_Microprocessador_ciclo_unico;
+module datamemory_testbench();
 
     reg clk;
     reg mem_write;
@@ -8,7 +8,7 @@ module tb_Microprocessador_ciclo_unico;
     wire [7:0] valor_saida;
 
     // Instancia o módulo
-    Microprocessador_ciclo_unico uut (
+    DataMemory uut (
         .clk(clk),
         .mem_write(mem_write),
         .mem_read(mem_read),

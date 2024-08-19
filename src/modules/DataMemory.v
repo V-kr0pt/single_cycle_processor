@@ -1,4 +1,4 @@
-module Microprocessador_ciclo_unico (
+module DataMemory (
     input wire clk,
     input wire mem_write,       // Sinal para escrever na memória
     input wire mem_read,        // Sinal para ler da memória

@@ -2,7 +2,8 @@
 // O que nos permite ter até 8 registradores.
 module FileRegister(
     input wire clk, 
-    input wire reset, // reseta todos os registradores
+    input wire reset, // reseta o registrador do endereço específico
+    input wire reset_all, // reseta todos os registradores
     input wire load, // permite trocar dado salvo
     input wire [2:0] address,  // 3 bits para endereçar os registradores
     input wire [7:0] d_in, // entrada de dados
@@ -12,7 +13,9 @@ module FileRegister(
     reg [7:0] registers [0:7];  // 8 registradores de 8 bits
 
     always @(posedge clk or posedge reset) begin
-        if (reset) begin //zera todos os registradores
+        if (reset) begin //zera o registrador do endereço
+            registers[address] <= 8'b0;
+        end else if (reset_all) begin //zera todos os registradores
             registers[0] <= 8'b0;
             registers[1] <= 8'b0;
             registers[2] <= 8'b0;

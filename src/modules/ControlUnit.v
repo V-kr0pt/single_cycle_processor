@@ -1,8 +1,5 @@
 module ControlUnit(
-    input wire clk,               // Sinal de clock
-    input wire reset_global,      // Sinal de reset global
     input [9:0] instruction,      // palavra iiiidddddd (10 bits)
-    input wire reset,             // Sinal de reset individual
     output reg [2:0] reg_a_select,    // Seleção do registrador A (3 bits)
     output reg [2:0] reg_b_select,    // Seleção do registrador B (3 bits)
     output reg [7:0] write_enable,    // Sinal de habilitação de escrita para 8 registradores
@@ -14,34 +11,25 @@ module ControlUnit(
     output reg md_select,             // Seleção do caminho para Bus D
     output reg load,                  // Sinal de carga para o PC
     output reg [7:0] set_value,       // Valor a ser carregado no PC
-    output reg [7:0] constant_in,     // Constante imediata extraída da instrução
-    output reg reset_individual,      // Sinal de reset individual para um registrador específico
-    output reg reset_all              // Sinal de reset global para todos os registradores
+    output reg [7:0] constant_in      // Constante imediata extraída da instrução
 );
-
 
 // Decodifica a instrução
 wire [3:0] opcode = instruction[9:6];  // Bits 9-6 são o opcode
 
-always @(posedge clk or posedge reset_global) begin
-    if (reset_global) begin
-        // Resetando todos os sinais
-        write_enable <= 8'b00000000;
-        constant_in <= 8'b00000000;  
-        g_select <= 4'b0000; 
-        mem_read <= 0;
-        mem_write <= 0;
-        mb_select <= 2'b00;
-        mf_select <= 0;
-        md_select <= 0;
-        load <= 0;
-        set_value <= 8'b00000000;
-        reset_individual <= 0;
-        reset_all <= 0;
-    end else begin
-        // Inicialização padrão dos sinais de reset para evitar reseta-los inadvertidamente
-        reset_individual <= 0;
-        reset_all <= 0;
+always @(*) begin
+
+    // Inicialização dos sinais de controle
+    write_enable = 8'b00000000;
+    constant_in = 8'b00000000;  
+    g_select = 4'b0000; 
+    mem_read = 0;
+    mem_write = 0;
+    mb_select = 2'b00;
+    mf_select = 0;
+    md_select = 0;
+    load = 0;
+    set_value = 8'b000000; 
     
     case(opcode)
         4'b0000: begin // ADD
@@ -63,7 +51,7 @@ always @(posedge clk or posedge reset_global) begin
         end
         
         4'b0010: begin // ADDI
-            g_select <= 4'b0000; 
+            g_select <= 4'b0010; 
             reg_a_select <= instruction[5:3]; 
             constant_in <= instruction[2:0]; // Constante dos 3 bits menos significativos
             mb_select <= 2'b01; // Seleciona o imediato para Bus B
@@ -73,7 +61,7 @@ always @(posedge clk or posedge reset_global) begin
         end
         
         4'b0011: begin // SUBI
-            g_select <= 4'b0001; 
+            g_select <= 4'b0011; 
             reg_a_select <= instruction[5:3]; 
             constant_in <= instruction[2:0]; 
             mb_select <= 2'b01; 
@@ -83,29 +71,27 @@ always @(posedge clk or posedge reset_global) begin
         end
         
         4'b0100: begin // MUL2
-            g_select <= 4'b0101; 
+            g_select <= 4'b0100; 
             mf_select <= 1; 
             md_select <= 1; 
             write_enable[reg_a_select] <= 1; 
         end
         
         4'b0101: begin // DIV2
-            g_select <= 4'b0110; 
+            g_select <= 4'b0101; 
             mf_select <= 1; 
             md_select <= 1; 
             write_enable[reg_a_select] <= 1; 
         end
         
-        4'b0110: begin // CLR: Zera um registrador específico
-                mf_select <= 0; 
-                md_select <= 0; 
-                write_enable[reg_a_select] <= 1; 
-                reset_individual <= 1;  // Ativa o reset individual para o registrador selecionado
-            end
-            
-         4'b0111: begin // RST: Reseta todos os registradores
-                reset_all <= 1;  // Ativa o reset para todos os registradores
-            end
+        4'b0110: begin // CLR: Zera um registrador
+            mf_select <= 0; // Não precisamos colocar o valor da ALU no Bus F
+            md_select <= 0; // Não passamos pela ALU, zeramos diretamente
+            write_enable[reg_a_select] <= 1; // Zera o registrador
+        end
+        
+        4'b0111: begin // RST: Reseta todos os registradores
+        end
 
         4'b1000: begin // MOV: Copia regB para regA
             reg_a_select <= instruction[5:3]; 
@@ -154,8 +140,6 @@ always @(posedge clk or posedge reset_global) begin
             md_select <= 0;
         end
     endcase
-end
-
 end
 
 endmodule

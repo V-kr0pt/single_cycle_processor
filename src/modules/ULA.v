@@ -20,7 +20,7 @@ module ULA(
             4'b0000: {carrier_flag, result} = val_a + val_b; // ADD
             4'b0001: begin 
                         {carrier_flag, result} = val_a - val_b; // SUB
-                        if ( reg_b > reg_a )
+                        if ( val_b > val_a )
                             negative_flag = 1'b1 ;
                         else
                             negative_flag = 1'b0 ;

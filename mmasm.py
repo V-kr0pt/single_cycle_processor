@@ -14,8 +14,8 @@ def assemble(assembly_code):
     parse_dict = {
         "ADD": "0000",
         "SUB": "0001",
-        "MOV": "0010",
-        "ADDI": "0011",
+        "ADDI": "0010",
+        "SUBI": "0011",
         "MUL2": "0100",
         "DIV2": "0101",
         "CLR": "0110",

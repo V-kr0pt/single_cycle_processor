@@ -16,19 +16,7 @@ module ControlUnit(
 wire [3:0] opcode = instruction[9:6];  // Bits 9-6 são o opcode
 
 always @(*) begin
-
-    // Inicialização dos sinais de controle
-    load = 8'b00000000;
-    constant_in = 8'b00000000;  
-    ALU_opcode = 4'b0000; 
-    mem_read = 0;
-    mem_write = 0;
-    mb_select = 2'b00;
-    mf_select = 0;
-    md_select = 0;
-    load = 0;
-    pc_value = 8'b000000; 
-    
+   
     case(opcode)
         4'b0000: begin // ADD
             ALU_opcode <= 4'b0000; 

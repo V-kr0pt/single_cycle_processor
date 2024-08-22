@@ -1,35 +1,39 @@
 // Vamos ter 3 bits livres para endereçar os registradores.
 // O que nos permite ter até 8 registradores.
 module FileRegister(
+    //Entradas
     input wire clk, 
-    input wire reset, // reseta o registrador do endereço específico
+    input wire reset, // reseta o registrador do endereço addr_a
     input wire reset_all, // reseta todos os registradores
-    input wire load, // permite trocar dado salvo
-    input wire [2:0] address,  // 3 bits para endereçar os registradores
-    input wire [7:0] d_in, // entrada de dados
-    output reg [7:0] q_out // saída do registrador
+    input wire load, // permite salvar dado no endereço addr_a 
+    input wire [2:0] addr_a,  // 3 bits para endereçar os registradores
+    input wire [2:0] addr_b,  // 3 bits para endereçar os registradores
+    input wire [7:0] d_in, // dado de entrada para o registrador addr_a
+    
+    // Saídas
+    output reg [7:0] val_a, // saída do registrador barramento A
+    output reg [7:0] val_b // saída do registrador barramento B
 );
 
     reg [7:0] registers [0:7];  // 8 registradores de 8 bits
 
+    integer i; // variável de controle do loop
     always @(posedge clk or posedge reset) begin
-        if (reset) begin //zera o registrador do endereço
-            registers[address] <= 8'b0;
+        if (reset) begin //zera o registrador no endereço add_a
+            registers[addr_a] <= 8'b0;
+        
         end else if (reset_all) begin //zera todos os registradores
-            registers[0] <= 8'b0;
-            registers[1] <= 8'b0;
-            registers[2] <= 8'b0;
-            registers[3] <= 8'b0;
-            registers[4] <= 8'b0;
-            registers[5] <= 8'b0;
-            registers[6] <= 8'b0;
-            registers[7] <= 8'b0;
-        end else if (load) begin
-            registers[address] <= d_in;
+            for (i = 0; i < 8; i = i + 1) begin
+                registers[i] <= 8'b0;
+            end
+        
+        end else if (load) begin // carrega dado no registrador addr_a
+            registers[addr_a] <= d_in;
         end
     end
     
     always @(*) begin
-        q_out = registers[address];
+        val_a = registers[addr_a];
+        val_b = registers[addr_b];
     end
 endmodule

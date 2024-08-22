@@ -9,7 +9,7 @@ module FileRegister(
     input wire [2:0] addr_a,  // 3 bits para endereçar os registradores
     input wire [2:0] addr_b,  // 3 bits para endereçar os registradores
     input wire [7:0] d_in, // dado de entrada para o registrador addr_a
-    
+    input wire mb_select, // seleciona se val_b vai ser o próprio addr_b ou o dado do registrador
     // Saídas
     output reg [7:0] val_a, // saída do registrador barramento A
     output reg [7:0] val_b // saída do registrador barramento B
@@ -34,6 +34,9 @@ module FileRegister(
     
     always @(*) begin
         val_a = registers[addr_a];
-        val_b = registers[addr_b];
+        if (mb_select) begin
+            val_b = addr_b;
+        end else
+            val_b = registers[addr_b]; 
     end
 endmodule

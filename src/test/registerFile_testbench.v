@@ -8,6 +8,7 @@ module registerFile_testbench();
     reg [2:0] addr_a;
     reg [2:0] addr_b;
     reg [7:0] d_in;
+    reg mb_select;
     
     wire [7:0] out_a;
     wire [7:0] out_b;
@@ -23,6 +24,7 @@ module registerFile_testbench();
         .addr_a(addr_a), // endereço do registrador A
         .addr_b(addr_b), // endereço do registrador B
         .d_in(d_in),
+        .mb_select(mb_select), // seleciona se val_b vai ser o dado de entrada ou o dado do registrador
         .val_a(out_a) , // saída do registrador A
         .val_b(out_b) // saída do registrador B
     );
@@ -43,6 +45,7 @@ module registerFile_testbench();
         addr_a = 0;
         addr_b = 0;
         d_in = 0;
+        mb_select = 0;
 
         // Aplica reset_all
         #10 reset_all = 1;
@@ -87,11 +90,19 @@ module registerFile_testbench();
         #5 load = 0;
         $display("Test 4 done!");
 
-        $display("Test 5: Reset all registers...");
-        // Teste 5: Aplica reset_all (deve zerar o registrador mesmo sem estar na borda positiva do clock)
+        $display("Test 5: Put a constant as val_b...");
+        // Teste 5: Coloca um valor constante em val_b
+        #10 addr_b = 3'b001;
+        mb_select = 1;
+        $display("Address A: %d, Address B: %d, d_in: %b, out_a: %b, out_b: %b, load: %b", addr_a, addr_b, d_in, out_a, out_b, load);
+        $display("Test 6 done!");
+
+
+        $display("Test 6: Reset all registers...");
+        // Teste 6: Aplica reset_all (deve zerar o registrador mesmo sem estar na borda positiva do clock)
         #10 reset_all = 1;
         #10 reset_all = 0;
-        $display("Test 5 done!");
+        $display("Test 6 done!");
 
         $display("Test finished! :D");
 

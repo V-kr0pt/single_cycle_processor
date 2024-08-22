@@ -25,8 +25,9 @@ module ULA(
                         else
                             negative_flag = 1'b0 ;
                      end
-            4'b0101: {carrier_flag, result} = val_a << 1; // SHL or MUL2 (multiplicação por 2)
-            4'b0110: {carrier_flag, result} = val_a >> 1; // SHR or DIV2 (divisão por 2)
+            4'b0010: {carrier_flag, result} = val_a << 1; // SHL or MUL2 (multiplicação por 2)
+            4'b0011: {carrier_flag, result} = val_a >> 1; // SHR or DIV2 (divisão por 2)
+            4'b0100: {carrier_flag, result} = val_b; // MOV
         endcase
     end
 

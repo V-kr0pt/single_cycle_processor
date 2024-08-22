@@ -1,140 +1,324 @@
 module ControlUnit(
+    // Entradas
     input clk,                  // Clock
     input [9:0] instruction,      // palavra iiiidddddd (10 bits)
+    
+    //Saídas (sinais de controle)
+    
+    //Registrador
     output reg [2:0] addr_a,    // Seleção do registrador A (3 bits)
     output reg [2:0] addr_b,    // Seleção do registrador B (3 bits)
-    output reg [7:0] load,    // Sinal de habilitação de escrita para 8 registradores
+    output reg reset,               // Sinal de reset para o registrador A
+    output reg reset_all,       // Sinal de reset para todos registradores
+    output reg load,    // Sinal de habilitação de escrita para o registrador A
+    output reg mb_select,       // Seleção do caminho para Bus B
+    
+    //ALU
     output reg [3:0] ALU_opcode,        // Sinal de controle da ALU 
+    
+    // Memória
     output reg mem_read,              // Sinal de leitura da memória
     output reg mem_write,             // Sinal de escrita na memória
-    output reg mb_select,       // Seleção do caminho para Bus B
+    output reg [5:0] mem_addr,       // Endereço da memória
+    output reg mem_select,           // Seleção do caminho para Bus D
+    
+   
+    // PC
     output reg load_PC,                  // Sinal de carga para o PC
     output reg [7:0] pc_value,       // Valor a ser carregado no PC
-    output reg [7:0] constant_in      // Constante imediata extraída da instrução
+
 );
 
     // Inicialização das variáveis
     initial begin
-        load = 8'b0;
+        addr_a = 3'b0;
+        addr_b = 3'b0;
+        reset = 0;
+        reset_all = 0;
+        load = 0;
+        mb_select = 0;
+        d_in = 0;
         ALU_opcode = 4'b0;
         mem_read = 0;
         mem_write = 0;
-        mb_select = 0;
+        mem_addr = 6'b0,
+        mem_select = 0;
         load_PC = 0;
-        pc_value = 8'b0;
-        constant_in = 8'b0;
+        pc_value = 8'b0;        
     end
 
-        // Decodifica a instrução
+ 
+    // Decodifica a instrução
     wire [3:0] opcode = instruction[9:6];  // Bits 9-6 são o opcode
 
     always @(posedge clk) begin
         case(opcode)
-            4'b0000: begin // ADD
-                ALU_opcode <= 4'b0000; 
+            4'b0000: begin // ADD  
+                ALU_opcode <= 4'b0000; // operação de soma na ALU                               
                 addr_a <= instruction[5:3]; 
                 addr_b <= instruction[2:0];
-                mb_select <= 0; // Seleciona o registrador B para Bus B
-                ; // Habilita a escrita no registrador A
+                load <= 1; // Habilita a escrita no registrador A
+                mb_select <= 1; // Seleciona o registrador B para Bus B
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+                
+                // Outros sinais em zero
+                reset <= 0;
+                reset_all <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             4'b0001: begin // SUB
                 ALU_opcode <= 4'b0001; 
                 addr_a <= instruction[5:3]; 
                 addr_b <= instruction[2:0];
-                mf_select <= 1; 
-                md_select <= 1; 
-                load[addr_a] <= 1; 
+                mb_select <= 1; // Seleciona o registrador B para Bus B
+                load <= 1; // Habilita a escrita no registrador A
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+
+                // Outros sinais em zero
+                reset <= 0;
+                reset_all <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;   
             end
 
             4'b0010: begin // ADDI
-                ALU_opcode <= 4'b0010; 
+                ALU_opcode <= 4'b0000; 
                 addr_a <= instruction[5:3]; 
-                constant_in <= instruction[2:0]; // Constante dos 3 bits menos significativos
-                mb_select <= 2'b01; // Seleciona o imediato para Bus B
-                mf_select <= 1; 
-                md_select <= 1; 
-                load[addr_a] <= 1; 
+                addr_b <= instruction[2:0]; // Constante dos 3 bits menos significativos
+                mb_select <= 0; // Seleciona o addr_b para Bus B
+                load <= 1; // Habilita a escrita no registrador A
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+                
+                //Outros sinais em zero
+                reset <= 0;
+                reset_all <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;   
             end
 
             4'b0011: begin // SUBI
-                ALU_opcode <= 4'b0011; 
+                ALU_opcode <= 4'b0001; 
                 addr_a <= instruction[5:3]; 
-                constant_in <= instruction[2:0]; 
-                mb_select <= 2'b01; 
-                mf_select <= 1; 
-                md_select <= 1; 
-                load[addr_a] <= 1; 
+                addr_b <= instruction[2:0]; 
+                mb_select <= 0; // Seleciona o addr_b para Bus B
+                load <= 1; // Habilita a escrita no registrador A
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+
+
+                // Outros sinais em zero
+                reset <= 0;
+                reset_all <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;                   
             end
 
             4'b0100: begin // MUL2
-                ALU_opcode <= 4'b0100; 
-                mf_select <= 1; 
-                md_select <= 1; 
-                load[addr_a] <= 1; 
+                ALU_opcode <= 4'b0010; 
+                addr_a <= instruction[5:3]; 
+                load <= 1; 
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+
+                // Outros sinais em zero
+                addr_b <= 3'b000
+                reset <= 0;
+                reset_all <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             4'b0101: begin // DIV2
-                ALU_opcode <= 4'b0101; 
-                mf_select <= 1; 
-                md_select <= 1; 
-                load[addr_a] <= 1; 
+                ALU_opcode <= 4'b0011; 
+                addr_a <= instruction[5:3]; 
+                load <= 1; 
+                mem_select <= 0; // Resultado da ULA para entrada do registrador A
+
+                // Outros sinais em zero
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             4'b0110: begin // CLR: Zera um registrador
-                mf_select <= 0; // Não precisamos colocar o valor da ALU no Bus F
-                md_select <= 0; // Não passamos pela ALU, zeramos diretamente
-                load[addr_a] <= 1; // Zera o registrador
+                addr_a <= instruction[5:3];
+                reset <= 1; // Zera o registrador
+
+                // Outros sinais em zero
+                addr_b <= 3'b0;
+                reset_all <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                mem_select <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             4'b0111: begin // RST: Reseta todos os registradores
+                reset_all <= 1; // Zera todos os registradores
+
+                // Outros sinais em zero
+                addr_a <= 3'b0;
+                addr_b <= 3'b0;
+                reset <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                mem_select <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             4'b1000: begin // MOV: Copia regB para regA
+                ULA_opcode <= 4'b0100;
                 addr_a <= instruction[5:3]; 
                 addr_b <= instruction[2:0]; 
-                mb_select <= 2'b00; // Seleciona o registrador B para Bus B
-                mf_select <= 1; // Direciona o Bus F para receber o valor do Bus B (que vem do registrador B)
-                md_select <= 1; // Seleciona o Bus F para fornecer o valor ao Bus D
-                load[addr_a] <= 1; 
+                mb_select <= 1; // Seleciona o registrador B para Bus B
+                mem_select <= 0;
+                load <= 1; 
 
+                // Outros sinais em zero
+                reset <= 0;
+                reset_all <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end 
 
             4'b1001: begin // JMP: Salto para um endereço
-                load <= 1;                      // PC capaz de carregar valor
+                load_PC <= 1;                      // PC capaz de carregar valor
                 pc_value <= instruction[5:0];  // Define o novo valor do PC a partir dos 6 bits menos significativos da instrução
+            
+                // Outros sinais em zero
+                addr_a <= 3'b0;
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                mem_select <= 0;                     
             end
 
             4'b1010: begin // OUT: Envia dado ao hardware de saída
                 addr_a <= instruction[5:3]; // Seleciona o registrador A para a saída
-                mf_select <= 1;     // Seleciona a saída da ALU (ou do registrador A) para Bus F
-                md_select <= 1;     // Coloca o valor de Bus F em Bus D
-                // Aqui, Bus D seria conectado ao driver do display de 7 segmentos
-                load <= 8'b00000000; // Desabilita a escrita nos registradores
+                // VER COMO FICOU O LCD
+                
+                // Outros sinais em zero
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_write <= 0;
+                mem_addr <= 6'b0;
+                mem_select <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
-            4'b1011: begin // LOAD: Carrega da memória para um registrador
+            4'b1011: begin // LOAD: Carrega da memória para o registrador de endereço 0x00
+                addr_a <= 3'b0; // Registrador de endereço 0x00
+                mem_addr <= instruction[5:0]; // Endereço da memória de dados
                 mem_read <= 1;     // Habilita a leitura da memória
-                md_select <= 1;    // Seleciona o dado da memória para Bus D
-                load[addr_a] <= 1; // Habilita a escrita no registrador A
+                mem_select <= 1;    // Seleciona o dado da memória para Bus D
+                load <= 1; // Habilita a escrita no registrador A
+
+                // Outros sinais em zero
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_write <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
-            4'b1100: begin // STORE: Armazena o conteúdo de um registrador na memória
-                addr_a <= instruction[5:3]; // Seleciona o registrador A cujo valor será armazenado
-                mb_select <= 2'b00; // Direciona o valor do registrador A para o barramento B
-                md_select <= 1; // Direciona o valor do barramento B para o barramento D 
+            4'b1100: begin // STORE: Armazena o conteúdo do registrador 0x00 na memória
+                addr_a <= 3'b0; // Seleciona o registrador A cujo valor será armazenado
+                mem_addr <= instruction[5:0]; // Endereço da memória de dados
                 mem_write <= 1; // Habilita a escrita na memória
+
+                // Outros sinais em zero
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
+                mem_read <= 0;
+                mem_select <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0;
             end
 
             default: begin
                 // Instrução inválida ou não reconhecida
-                load <= 8'b00000000;
-                ALU_opcode <= 4'b0000;
+                addr_a <= 3'b0;
+                addr_b <= 3'b0;
+                reset <= 0;
+                reset_all <= 0;
+                load <= 0;
+                mb_select <= 0;
+                d_in <= 0;
+                ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mb_select <= 2'b00;
-                mf_select <= 0;
-                md_select <= 0;
+                mem_addr <= 6'b0;
+                mem_select <= 0;
+                load_PC <= 0;
+                pc_value <= 8'b0; 
             end
         endcase
     end

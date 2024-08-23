@@ -1,6 +1,6 @@
 module CPU(
     input wire clk,  // Clock
-    input wire reset_PC, // Reset do PC 
+    input wire reset_CPU, // Reset da CPU 
     output [7:0] output_port,  // Saída (para o display de 7 segmentos)
     output carrier_flag,  // Flag de carry
     output zero_flag,  // Flag de zero
@@ -38,7 +38,7 @@ wire [7:0] pc_output;
 // Instanciação de módulos
 PC pc(
     .clk(clk),
-    .reset(reset_PC),
+    .reset(reset_CPU),
     .load_PC(load_PC),
     .set_value(pc_input)
     .points(pc_output)
@@ -57,7 +57,7 @@ control_unit control_unit(
     .instruction(instruction),
     .addr_a(addr_a),
     .addr_b(addr_b),
-    .reset(reset_FR)
+    .reset(reset_FR),
     .reset_all(reset_all_FR),
     .load(load),
     .mb_select(mb_select),
@@ -75,7 +75,7 @@ control_unit control_unit(
 FileRegister file_register(
     .clk(clk),
     .reset(reset_FR),
-    .reset_all(reset_all_FR),
+    .reset_all(reset_all_FR | reset_CPU),
     .load(load),
     .addr_a(addr_a),
     .addr_b(addr_b),

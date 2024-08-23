@@ -39,6 +39,7 @@ def assemble(assembly_code):
         addres_1 = int(addres_1,16)
         flag_only_one_addres = False
     except:
+        data = int(data,16)
         flag_only_one_addres = True #case the instruction has only one addres
     
 

@@ -27,7 +27,7 @@ wire mem_read;
 wire mem_write;
 wire [5:0] mem_addr;
 wire mem_select;
-wire mem_output;
+wire [7:0] mem_output;
 
 
 wire load_PC;
@@ -102,10 +102,10 @@ ALU alu(
 // Módulo memória de dados
 data_memory data_memory(
     .clk(clk),
-    .read(mem_read),
-    .write(mem_write),
+    .mem_read(mem_read),
+    .mem_write(mem_write),
     .address(mem_addr),
-    .data_in(addr_B),
+    .data_in(ALU_output),
     .data_out(mem_output)
 );
 

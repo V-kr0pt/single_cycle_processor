@@ -25,7 +25,7 @@ module ControlUnit(
    
     // PC
     output reg load_PC,                  // Sinal de carga para o PC
-    output reg [7:0] pc_value,       // Valor a ser carregado no PC
+    output reg [7:0] pc_value       // Valor a ser carregado no PC
 
 );
 
@@ -37,11 +37,10 @@ module ControlUnit(
         reset_all = 0;
         load = 0;
         mb_select = 0;
-        d_in = 0;
         ALU_opcode = 4'b0;
         mem_read = 0;
         mem_write = 0;
-        mem_addr = 6'b0,
+        mem_addr = 6'b0;
         mem_select = 0;
         load_PC = 0;
         pc_value = 8'b0;        
@@ -64,7 +63,6 @@ module ControlUnit(
                 // Outros sinais em zero
                 reset <= 0;
                 reset_all <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -83,7 +81,6 @@ module ControlUnit(
                 // Outros sinais em zero
                 reset <= 0;
                 reset_all <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -102,7 +99,6 @@ module ControlUnit(
                 //Outros sinais em zero
                 reset <= 0;
                 reset_all <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -122,7 +118,6 @@ module ControlUnit(
                 // Outros sinais em zero
                 reset <= 0;
                 reset_all <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -137,11 +132,10 @@ module ControlUnit(
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
 
                 // Outros sinais em zero
-                addr_b <= 3'b000
+                addr_b <= 3'b000;
                 reset <= 0;
                 reset_all <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -160,7 +154,6 @@ module ControlUnit(
                 reset <= 0;
                 reset_all <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
@@ -177,7 +170,6 @@ module ControlUnit(
                 reset_all <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
@@ -196,7 +188,6 @@ module ControlUnit(
                 reset <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
@@ -217,7 +208,6 @@ module ControlUnit(
                 // Outros sinais em zero
                 reset <= 0;
                 reset_all <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
@@ -237,7 +227,6 @@ module ControlUnit(
                 reset_all <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
@@ -255,7 +244,6 @@ module ControlUnit(
                 reset_all <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;
@@ -277,7 +265,6 @@ module ControlUnit(
                 reset <= 0;
                 reset_all <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_write <= 0;
                 load_PC <= 0;
@@ -295,7 +282,6 @@ module ControlUnit(
                 reset_all <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_select <= 0;
@@ -311,7 +297,6 @@ module ControlUnit(
                 reset_all <= 0;
                 load <= 0;
                 mb_select <= 0;
-                d_in <= 0;
                 ALU_opcode <= 4'b0;
                 mem_read <= 0;
                 mem_write <= 0;

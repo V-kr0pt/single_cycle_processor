@@ -2,9 +2,9 @@ module DataMemory (
     input wire clk,
     input wire mem_write,       // Sinal para escrever na memória
     input wire mem_read,        // Sinal para ler da memória
-    input wire [5:0] endereco,  // Endereço da memória
-    input wire [7:0] valor_escrita, // Dados a serem escritos na memória
-    output reg [7:0] valor_saida   // Dados lidos da memória
+    input wire [5:0] address,  // Endereço da memória
+    input wire [7:0] data_in, // Dados a serem escritos na memória
+    output reg [7:0] data_out   // Dados lidos da memória
 );
 
     reg [7:0] memoria [0:49]; // Memória de 50 posições de 8 bits

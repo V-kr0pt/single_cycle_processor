@@ -8,10 +8,10 @@ module d7s(
     reg [3:0] hundreds; // Dígito das centenas
     reg [3:0] tens;     // Dígito das dezenas
     reg [3:0] units;    // Dígito das unidades
+    integer temp;       // Variável temporária
 
     // Conversão de binário para dígitos decimais
     always @(*) begin
-        integer temp;
         temp = read_data;
         
         hundreds = temp / 100;

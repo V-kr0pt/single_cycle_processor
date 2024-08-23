@@ -207,7 +207,7 @@ module ControlUnit(
             end
 
             4'b1000: begin // MOV: Copia regB para regA
-                ULA_opcode <= 4'b0100;
+                ALU_opcode <= 4'b0100;
                 addr_a <= instruction[5:3]; 
                 addr_b <= instruction[2:0]; 
                 mb_select <= 1; // Seleciona o registrador B para Bus B

@@ -1,0 +1,1 @@
+iverilog -o src/modules/sim_CPU src/test/CPU_testbench.v src/modules/ControlUnit.v src/modules/CPU.v src/modules/d7s.v src/modules/DataMemory.v  src/modules/FileRegister.v src/modules/InstructionMemory.v src/modules/mux_reg_input.v src/modules/PointCounter.v src/modules/ULA.v 

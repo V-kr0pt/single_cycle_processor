@@ -35,8 +35,8 @@ module FileRegister(
     always @(*) begin
         val_a = registers[addr_a];
         if (mb_select) begin
-            val_b = addr_b;
+            val_b = registers[addr_b];
         end else
-            val_b = registers[addr_b]; 
+            val_b = addr_b; 
     end
 endmodule

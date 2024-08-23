@@ -1,21 +1,28 @@
 module CPU(
-    input wire clk,  // Clock
-    input wire reset_CPU, // Reset da CPU 
-    output [7:0] output_port,  // Saída (para o display de 7 segmentos)
-    output carrier_flag,  // Flag de carry
-    output zero_flag,  // Flag de zero
-    output negative_flag  // Flag de negativo
+    input wire clk,             // Clock
+    input wire reset_CPU,       // Reset da CPU 
+    output reg [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
+    output reg [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
+    output reg [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
+    output reg [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
+    output reg [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
+    output reg [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
+    output reg [6:0] HEX6,      // Saída para o display 6 de 7 segmentos
+    output reg [6:0] HEX7,      // Saída para o display 7 de 7 segmentos
+    output wire carrier_flag,    // Flag de carry
+    output wire zero_flag,       // Flag de zero
+    output wire negative_flag    // Flag de negativo
 );
 
 
-    // Declaração de sinais internos
-    wire [9:0] instruction;  // Instrução
+    // DeclaraÃ§Ã£o de sinais internos
+    wire [9:0] instruction;  // InstruÃ§Ã£o
     wire [2:0] addr_a;  // Registrador A
     wire [2:0] addr_b;  // Registrador B
     wire reset_FR;  // Reset FileRegister
     wire reset_all_FR; // Reset all FileRegister
     wire load;
-    wire mb_select; // Seleciona se val_b é um instantaneo ou um dado de um registrador
+    wire mb_select; // Seleciona se val_b Ã© um instantaneo ou um dado de um registrador
     wire [7:0] reg_input;
 
 
@@ -35,8 +42,9 @@ module CPU(
     wire [7:0] pc_input;
     wire [7:0] pc_output;
 
+	 wire [7:0] output_port;
 
-    // Instanciação de módulos
+    // InstanciaÃ§Ã£o de mÃ³dulos
     PointCounter pc(
         .clk(clk),
         .reset(reset_CPU),
@@ -52,7 +60,7 @@ module CPU(
     );
 
 
-    // Módulo de controle
+    // MÃ³dulo de controle
     ControlUnit control_unit(
         .clk(clk),
         .instruction(instruction),
@@ -72,7 +80,7 @@ module CPU(
     );
 
 
-    // Módulo de registradores
+    // MÃ³dulo de registradores
     FileRegister file_register(
         .clk(clk),
         .reset(reset_FR),
@@ -87,7 +95,7 @@ module CPU(
     );
 
 
-    // Módulo da ALU
+    // MÃ³dulo da ALU
     ULA alu(
         .clk(clk),
         .op(ALU_opcode),
@@ -100,7 +108,7 @@ module CPU(
     );
 
 
-    // Módulo memória de dados
+    // MÃ³dulo memÃ³ria de dados
     DataMemory data_memory(
         .clk(clk),
         .mem_read(mem_read),
@@ -110,12 +118,16 @@ module CPU(
         .data_out(mem_output)
     );
 
-    // Módulo mux de entrada do registrador
+    // MÃ³dulo mux de entrada do registrador
     mux_reg_input mux_reg_input(
         .memory_select(mem_select),
         .memory_output(mem_output),
         .ALU_output(ALU_output),
         .reg_input(reg_input)
     );
+	 
+	 d7s display (
+		.read_data(mem_output)
+	 );
 
 endmodule

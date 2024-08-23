@@ -1,33 +1,38 @@
 module CPU(
     input wire clk,  // Clock
     input wire reset_PC, // Reset do PC 
-    output [7:0] output_port  // Saída (para o display de 7 segmentos)
+    output [7:0] output_port,  // Saída (para o display de 7 segmentos)
+    output carrier_flag,  // Flag de carry
+    output zero_flag,  // Flag de zero
+    output negative_flag  // Flag de negativo
 );
 
 
 // Declaração de sinais internos
 wire [9:0] instruction;  // Instrução
-wire [7:0] addr_A;  // Registrador A
-wire [7:0] addr_B;  // Registrador B
+wire [7:0] addr_a;  // Registrador A
+wire [7:0] addr_b;  // Registrador B
 wire reset_FR;  // Reset FileRegister
-wire reset_all_FR // Reset all FileRegister
-wire load
-wire mb_select // Seleciona se val_b é um instantaneo ou um dado de um registrador
-wire [7:0] reg_input
-
-wire ALU_opcode
-wire output_ula
-
-wire mem_read
-wire mem_write
-wire [5:0] mem_addr
-wire mem_select
-wire output_mem
+wire reset_all_FR; // Reset all FileRegister
+wire load;
+wire mb_select; // Seleciona se val_b é um instantaneo ou um dado de um registrador
+wire [7:0] reg_input;
 
 
-wire load_PC
-wire [7:0] pc_input
-wire [7:0] pc_output
+wire [7:0] val_a;
+wire [7:0] val_b;
+wire [3:0] ALU_opcode;
+
+wire mem_read;
+wire mem_write;
+wire [5:0] mem_addr;
+wire mem_select;
+wire mem_output;
+
+
+wire load_PC;
+wire [7:0] pc_input;
+wire [7:0] pc_output;
 
 
 // Instanciação de módulos
@@ -41,7 +46,6 @@ PC pc(
 
 
 instruction_memory instruction_memory(
-    .clk(clk),
     .address(pc_output),
     .instruction(instruction)
 );
@@ -51,18 +55,18 @@ instruction_memory instruction_memory(
 control_unit control_unit(
     .clk(clk),
     .instruction(instruction),
-    .addr_A(addr_A),
-    .addr_B(addr_B),
+    .addr_a(addr_a),
+    .addr_b(addr_b),
     .reset(reset_FR)
-    .reset_all(reset_all_FR)
-    .load(load)
-    .mb_select(mb_select)
-    .ALU_opcode(ALU_opcode)
-    .mem_read(mem_read)
-    .mem_write(mem_write)
-    .mem_addr(mem_addr)
-    .mem_select(mem_select)
-    .load_PC(load_PC)
+    .reset_all(reset_all_FR),
+    .load(load),
+    .mb_select(mb_select),
+    .ALU_opcode(ALU_opcode),
+    .mem_read(mem_read),
+    .mem_write(mem_write),
+    .mem_addr(mem_addr),
+    .mem_select(mem_select),
+    .load_PC(load_PC),
     .pc_value(pc_input)
 );
 
@@ -73,21 +77,25 @@ FileRegister file_register(
     .reset(reset_FR),
     .reset_all(reset_all_FR),
     .load(load),
+    .addr_a(addr_a),
+    .addr_b(addr_b),
+    .d_in(reg_input),
     .mb_select(mb_select),
-    .addr_A(addr_A),
-    .addr_B(addr_B)
-    .d_in(reg_input)
+    .val_a(val_a),
+    .val_b(val_b)    
 );
 
 
 // Módulo da ALU
 ALU alu(
     .clk(clk),
-    .reset(reset),
-    .opcode(ALU_opcode),
-    .A(addr_A),
-    .B(addr_B),
-    .output(ula_output)
+    .op(ALU_opcode),
+    .val_a(val_a),
+    .val_b(val_b),
+    .output(ALU_output)
+    .zero_flag(zero_flag),
+    .carrier_flag(carrier_flag),
+    .negative_flag(negative_flag)
 );
 
 
@@ -105,6 +113,6 @@ data_memory data_memory(
 mux_reg_input mux_reg_input(
     .memory_select(mem_select),
     .memory_output(mem_output),
-    .ula_output(ula_output),
+    .ALU_output(ALU_output),
     .reg_input(reg_input)
 );

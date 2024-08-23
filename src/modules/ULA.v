@@ -1,8 +1,8 @@
 module ULA(
     input wire clk,
+    input wire [3:0] op, // 4 bits para operações
     input wire [7:0] val_a,  // no max 8 bits (quantidade de bits dos registradores)
     input wire [7:0] val_b, // no max 8 bits (quantidade de bits dos registradores)
-    input wire [3:0] op, // 4 bits para operações
     output reg [7:0] result,
     output reg zero_flag,
     output reg carrier_flag,
@@ -20,7 +20,7 @@ module ULA(
             4'b0000: {carrier_flag, result} = val_a + val_b; // ADD
             4'b0001: begin 
                         {carrier_flag, result} = val_a - val_b; // SUB
-                        if ( reg_b > reg_a )
+                        if ( val_b > val_a )
                             negative_flag = 1'b1 ;
                         else
                             negative_flag = 1'b0 ;

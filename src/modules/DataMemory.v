@@ -21,10 +21,10 @@ module DataMemory (
     // Escrita e leitura na memória
     always @(posedge clk) begin
         if (mem_write) begin
-            memoria[endereco] <= valor_escrita; // Escreve na memória
+            memoria[address] <= data_in; // Escreve na memória
         end
         if (mem_read) begin
-            valor_saida <= memoria[endereco]; // Lê da memória
+            data_out <= memoria[address]; // Lê da memória
         end
     end
 

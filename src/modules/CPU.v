@@ -4,14 +4,36 @@ module CPU(
     output wire [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
     output wire [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
     output wire [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
-    output wire [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
-    output wire [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
-    output wire [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
-    output wire [6:0] HEX6,      // Saída para o display 6 de 7 segmentos
-    output wire [6:0] HEX7,      // Saída para o display 7 de 7 segmentos
-    output wire carrier_flag,    // Flag de carry
-    output wire zero_flag,       // Flag de zero
-    output wire negative_flag    // Flag de negativo
+    // output wire [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
+    // output wire [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
+    // output wire [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
+    // output wire [6:0] HEX6,      // Saída para o display 6 de 7 segmentos
+    // output wire [6:0] HEX7,      // Saída para o display 7 de 7 segmentos
+    // output wire carrier_flag,    // Flag de carry
+    // output wire zero_flag,       // Flag de zero
+    // output wire negative_flag,    // Flag de negativo
+    // Debug outputs
+    output wire [9:0] dbg_instruction,
+    output wire [2:0] dbg_addr_a,
+    output wire [2:0] dbg_addr_b,
+    output wire [7:0] dbg_reg_input,
+    output wire [7:0] dbg_val_a,
+    output wire [7:0] dbg_val_b,
+    output wire [3:0] dbg_ALU_opcode,
+    output wire [7:0] dbg_ALU_output,
+    output wire [5:0] dbg_mem_addr,
+    output wire [7:0] dbg_mem_output,
+    output wire dbg_zero_flag,
+    output wire dbg_carrier_flag,
+    output wire dbg_negative_flag,
+    output wire dbg_mem_read,
+    output wire dbg_mem_write,
+    output wire dbg_load_PC,
+    output wire dbg_mb_select,
+    output wire [7:0] dbg_pc_input,
+    output wire [7:0] dbg_pc_output
+    // output wire dbg_reset_FR,
+    // output wire dbg_reset_all_FR
 );
 
 
@@ -132,5 +154,28 @@ module CPU(
       .Y1(HEX1),
       .Y2(HEX2)
 	 );
+	 
+	 // Connect internal signals to debug outputs
+    assign dbg_instruction = instruction;
+    assign dbg_addr_a = addr_a;
+    assign dbg_addr_b = addr_b;
+    assign dbg_reg_input = reg_input;
+    assign dbg_val_a = val_a;
+    assign dbg_val_b = val_b;
+    assign dbg_ALU_opcode = ALU_opcode;
+    assign dbg_ALU_output = ALU_output;
+    assign dbg_mem_addr = mem_addr;
+    assign dbg_mem_output = mem_output;
+    // assign dbg_zero_flag = zero_flag;
+    // assign dbg_carrier_flag = carrier_flag;
+    // assign dbg_negative_flag = negative_flag;
+    assign dbg_mem_read = mem_read;
+    assign dbg_mem_write = mem_write;
+    assign dbg_load_PC = load_PC;
+    assign dbg_mb_select = mb_select;
+    assign dbg_pc_input = pc_input;
+    assign dbg_pc_output = pc_output;
+    // assign dbg_reset_FR = reset_FR;
+    // assign dbg_reset_all_FR = reset_all_FR | reset_CPU;
 
 endmodule

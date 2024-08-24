@@ -245,7 +245,7 @@ module ControlUnit(
                 load <= 0;
                 mb_select <= 0;
                 ALU_opcode <= 4'b0;
-                mem_read <= 0;
+                mem_read <= 1;
                 mem_write <= 0;
                 mem_addr <= 6'b0;
                 mem_select <= 0;

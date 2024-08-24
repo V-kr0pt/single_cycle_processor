@@ -4,6 +4,9 @@
 *.qsf
 *.v.bak
 *.qws
+*.vwf.temp
+*.rpt
 src/modules/db/
 src/modules/incremental_db/
 src/modules/output_files/
+src/modules/simulation/

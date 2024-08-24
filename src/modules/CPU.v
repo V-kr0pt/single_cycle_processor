@@ -1,14 +1,14 @@
 module CPU(
     input wire clk,             // Clock
     input wire reset_CPU,       // Reset da CPU 
-    output reg [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
-    output reg [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
-    output reg [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
-    output reg [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
-    output reg [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
-    output reg [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
-    output reg [6:0] HEX6,      // Saída para o display 6 de 7 segmentos
-    output reg [6:0] HEX7,      // Saída para o display 7 de 7 segmentos
+    output wire [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
+    output wire [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
+    output wire [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
+    output wire [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
+    output wire [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
+    output wire [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
+    output wire [6:0] HEX6,      // Saída para o display 6 de 7 segmentos
+    output wire [6:0] HEX7,      // Saída para o display 7 de 7 segmentos
     output wire carrier_flag,    // Flag de carry
     output wire zero_flag,       // Flag de zero
     output wire negative_flag    // Flag de negativo
@@ -127,7 +127,10 @@ module CPU(
     );
 	 
 	 d7s display (
-		.read_data(mem_output)
+		.read_data(mem_output),
+      .Y0(HEX0),
+      .Y1(HEX1),
+      .Y2(HEX2)
 	 );
 
 endmodule

@@ -1,2 +1,9 @@
 .vscode
 *.vcd
+*.qpf
+*.qsf
+*.v.bak
+*.qws
+src/modules/db/
+src/modules/incremental_db/
+src/modules/output_files/

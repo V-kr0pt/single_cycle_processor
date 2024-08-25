@@ -1,9 +1,9 @@
 module CPU(
     input wire clk,             // Clock
     input wire reset_CPU,       // Reset da CPU 
-    output wire [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
-    output wire [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
-    output wire [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
+    // output wire [6:0] HEX0,      // Saída para o display 0 de 7 segmentos
+    // output wire [6:0] HEX1,      // Saída para o display 1 de 7 segmentos
+    // output wire [6:0] HEX2,      // Saída para o display 2 de 7 segmentos
     // output wire [6:0] HEX3,      // Saída para o display 3 de 7 segmentos
     // output wire [6:0] HEX4,      // Saída para o display 4 de 7 segmentos
     // output wire [6:0] HEX5,      // Saída para o display 5 de 7 segmentos
@@ -23,9 +23,9 @@ module CPU(
     output wire [7:0] dbg_ALU_output,
     output wire [5:0] dbg_mem_addr,
     output wire [7:0] dbg_mem_output,
-    output wire dbg_zero_flag,
-    output wire dbg_carrier_flag,
-    output wire dbg_negative_flag,
+    // output wire dbg_zero_flag,
+    // output wire dbg_carrier_flag,
+    // output wire dbg_negative_flag,
     output wire dbg_mem_read,
     output wire dbg_mem_write,
     output wire dbg_load_PC,
@@ -148,12 +148,12 @@ module CPU(
         .reg_input(reg_input)
     );
 	 
-	 d7s display (
-		.read_data(mem_output),
-      .Y0(HEX0),
-      .Y1(HEX1),
-      .Y2(HEX2)
-	 );
+	//  d7s display (
+	// 	.read_data(mem_output),
+    //   .Y0(HEX0),
+    //   .Y1(HEX1),
+    //   .Y2(HEX2)
+	//  );
 	 
 	 // Connect internal signals to debug outputs
     assign dbg_instruction = instruction;
@@ -171,10 +171,10 @@ module CPU(
     // assign dbg_negative_flag = negative_flag;
     assign dbg_mem_read = mem_read;
     assign dbg_mem_write = mem_write;
-    assign dbg_load_PC = load_PC;
-    assign dbg_mb_select = mb_select;
-    assign dbg_pc_input = pc_input;
-    assign dbg_pc_output = pc_output;
+    // assign dbg_load_PC = load_PC;
+    // assign dbg_mb_select = mb_select;
+    // assign dbg_pc_input = pc_input;
+    // assign dbg_pc_output = pc_output;
     // assign dbg_reset_FR = reset_FR;
     // assign dbg_reset_all_FR = reset_all_FR | reset_CPU;
 

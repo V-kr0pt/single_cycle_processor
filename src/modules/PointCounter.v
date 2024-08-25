@@ -10,7 +10,7 @@ module PointCounter (
         if (reset)
             points <= 0;
         else if (load)
-            points <= set_value;
+            points <= set_value + 1;
         else
             points <= points + 1;
     end

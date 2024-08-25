@@ -24,5 +24,3 @@ module InstructionMemory #(
     assign instruction = memory[address];
 
 endmodule
-
-

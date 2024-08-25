@@ -60,14 +60,14 @@ module ControlUnit(
                 mb_select <= 1; // Seleciona o registrador B para Bus B
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
                 
-                // Outros sinais em zero
-                reset <= 0;
-                reset_all <= 0;
+                // // Outros sinais em zero
+                // reset <= 0;
+                // reset_all <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b0001: begin // SUB
@@ -78,14 +78,14 @@ module ControlUnit(
                 load <= 1; // Habilita a escrita no registrador A
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
 
-                // Outros sinais em zero
-                reset <= 0;
-                reset_all <= 0;
+                // // Outros sinais em zero
+                // reset <= 0;
+                // reset_all <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;   
+                // pc_value <= 8'b0;   
             end
 
             4'b0010: begin // ADDI
@@ -96,14 +96,14 @@ module ControlUnit(
                 load <= 1; // Habilita a escrita no registrador A
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
                 
-                //Outros sinais em zero
-                reset <= 0;
-                reset_all <= 0;
+                // //Outros sinais em zero
+                // reset <= 0;
+                // reset_all <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;   
+                // pc_value <= 8'b0;   
             end
 
             4'b0011: begin // SUBI
@@ -116,13 +116,13 @@ module ControlUnit(
 
 
                 // Outros sinais em zero
-                reset <= 0;
-                reset_all <= 0;
+                // reset <= 0;
+                // reset_all <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;                   
+                // pc_value <= 8'b0;                   
             end
 
             4'b0100: begin // MUL2
@@ -132,15 +132,15 @@ module ControlUnit(
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
 
                 // Outros sinais em zero
-                addr_b <= 3'b000;
-                reset <= 0;
-                reset_all <= 0;
-                mb_select <= 0;
+                // addr_b <= 3'b000;
+                // reset <= 0;
+                // reset_all <= 0;
+                // mb_select <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b0101: begin // DIV2
@@ -150,15 +150,15 @@ module ControlUnit(
                 mem_select <= 0; // Resultado da ULA para entrada do registrador A
 
                 // Outros sinais em zero
-                addr_b <= 3'b0;
-                reset <= 0;
-                reset_all <= 0;
-                mb_select <= 0;
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                // mb_select <= 0;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b0110: begin // CLR: Zera um registrador
@@ -166,35 +166,35 @@ module ControlUnit(
                 reset <= 1; // Zera o registrador
 
                 // Outros sinais em zero
-                addr_b <= 3'b0;
-                reset_all <= 0;
-                load <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
+                // addr_b <= 3'b0;
+                // reset_all <= 0;
+                // load <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
-                mem_select <= 0;
+                // mem_addr <= 6'b0;
+                // mem_select <= 0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b0111: begin // RST: Reseta todos os registradores
                 reset_all <= 1; // Zera todos os registradores
 
                 // Outros sinais em zero
-                addr_a <= 3'b0;
-                addr_b <= 3'b0;
-                reset <= 0;
-                load <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
+                // addr_a <= 3'b0;
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // load <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
-                mem_select <= 0;
+                // mem_addr <= 6'b0;
+                // mem_select <= 0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b1000: begin // MOV: Copia regB para regA
@@ -206,51 +206,52 @@ module ControlUnit(
                 load <= 1; 
 
                 // Outros sinais em zero
-                reset <= 0;
-                reset_all <= 0;
-                ALU_opcode <= 4'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
+                // mem_addr <= 6'b0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end 
 
             4'b1001: begin // JMP: Salto para um endereço
                 load_PC <= 1;                      // PC capaz de carregar valor
                 pc_value <= instruction[5:0];  // Define o novo valor do PC a partir dos 6 bits menos significativos da instrução
             
-                // Outros sinais em zero
-                addr_a <= 3'b0;
-                addr_b <= 3'b0;
-                reset <= 0;
-                reset_all <= 0;
-                load <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
+                // // Outros sinais em zero
+                // addr_a <= 3'b0;
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                // load <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_read <= 0;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
-                mem_select <= 0;                     
+                // mem_addr <= 6'b0;
+                // mem_select <= 0;                     
             end
 
             4'b1010: begin // OUT: Envia dado ao hardware de saída
-                addr_a <= instruction[5:3]; // Seleciona o registrador A para a saída
+                mem_addr <= instruction[5:0]; 
+                mem_read <= 1; // Seleciona o posiçao de memoria para a saída
                 // VER COMO FICOU O LCD
                 
-                // Outros sinais em zero
-                addr_b <= 3'b0;
-                reset <= 0;
-                reset_all <= 0;
-                load <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
-                mem_read <= 1;
+                // // Outros sinais em zero
+                // addr_a <= 3'b0;
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                // load <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_write <= 0;
-                mem_addr <= 6'b0;
-                mem_select <= 0;
+                // // mem_addr <= 6'b0;
+                // mem_select <= 0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b1011: begin // LOAD: Carrega da memória para o registrador de endereço 0x00
@@ -260,15 +261,15 @@ module ControlUnit(
                 mem_select <= 1;    // Seleciona o dado da memória para Bus D
                 load <= 1; // Habilita a escrita no registrador A
 
-                // Outros sinais em zero
-                addr_b <= 3'b0;
-                reset <= 0;
-                reset_all <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
+                // // Outros sinais em zero
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_write <= 0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             4'b1100: begin // STORE: Armazena o conteúdo do registrador 0x00 na memória
@@ -276,17 +277,17 @@ module ControlUnit(
                 mem_addr <= instruction[5:0]; // Endereço da memória de dados
                 mem_write <= 1; // Habilita a escrita na memória
 
-                // Outros sinais em zero
-                addr_b <= 3'b0;
-                reset <= 0;
-                reset_all <= 0;
-                load <= 0;
-                mb_select <= 0;
-                ALU_opcode <= 4'b0;
+                // // Outros sinais em zero
+                // addr_b <= 3'b0;
+                // reset <= 0;
+                // reset_all <= 0;
+                // load <= 0;
+                // mb_select <= 0;
+                ALU_opcode <= 4'b1111;
                 mem_read <= 0;
-                mem_select <= 0;
+                // mem_select <= 0;
                 load_PC <= 0;
-                pc_value <= 8'b0;
+                // pc_value <= 8'b0;
             end
 
             default: begin

@@ -17,26 +17,26 @@ module FileRegister(
 
     reg [7:0] registers [0:7];  // 8 registradores de 8 bits
 
-    integer i; // variável de controle do loop
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin //zera o registrador no endereço add_a
-            registers[addr_a] <= 8'b0;
-        
-        end else if (reset_all) begin //zera todos os registradores
+   integer i; // Declare loop variable
+
+    always @(posedge clk or posedge reset_all) begin
+        if (reset_all) begin // Reset all registers
             for (i = 0; i < 8; i = i + 1) begin
                 registers[i] <= 8'b0;
             end
-        
-        end else if (load) begin // carrega dado no registrador addr_a
+        end else if (reset) begin // Reset specific register
+            registers[addr_a] <= 8'b0;
+        end else if (load) begin // Load data into the specific register
             registers[addr_a] <= d_in;
         end
     end
     
     always @(*) begin
-        val_a = registers[addr_a];
+        val_a <= registers[addr_a];
         if (mb_select) begin
-            val_b = registers[addr_b];
-        end else
-            val_b = addr_b; 
+            val_b <= registers[addr_b];
+        end else begin
+            val_b <= addr_b; 
+        end
     end
 endmodule

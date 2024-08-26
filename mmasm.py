@@ -1,4 +1,5 @@
 import sys
+import os
 
 def assemble(assembly_code):
     '''
@@ -74,10 +75,16 @@ def main(args):
             machine_code.append(line_machine_code)
 
     # Save the machine code in a txt file
-    with open("src\machine_code\machine_code.txt", "w") as file:
+    # Get the current working directory
+    current_dir = os.getcwd()
+
+    # Create the path for the machine code file
+    machine_code_path = os.path.join(current_dir, "src", "machine_code", "machine_code.txt")
+
+    # Save the machine code in a txt file
+    with open(machine_code_path, "w") as file:
         for line in machine_code:
-            file.write(line + "\n")
-    
+            file.write(line + "\n")    
 
 if __name__ == "__main__":
     args = sys.argv

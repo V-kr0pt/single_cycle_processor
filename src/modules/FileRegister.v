@@ -35,8 +35,7 @@ module FileRegister(
         val_a <= registers[addr_a];
         if (mb_select) begin
             val_b <= registers[addr_b];
-        end else begin
+        end else 
             val_b <= addr_b; 
-        end
     end
 endmodule

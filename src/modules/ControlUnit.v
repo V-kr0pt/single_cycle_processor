@@ -21,7 +21,7 @@ module ControlUnit(
     wire [3:0] opcode = instruction[9:6]; // Bits 9-6 são o opcode
 
     // Define valores padrão no início de cada ciclo de clock
-    always @(posedge clk) begin
+    always @(*) begin
         // Valores padrão de reset
         {reset, reset_all, load, mb_select, mem_read, mem_write, mem_select, load_PC} <= 1'b0;
         ALU_opcode <= 4'b1111;

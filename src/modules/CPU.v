@@ -28,6 +28,7 @@ module CPU(
     output wire dbg_negative_flag,
     output wire dbg_mem_read,
     output wire dbg_mem_write,
+    output wire dbg_mem_select,
     output wire dbg_load_PC,
     output wire dbg_mb_select,
     output wire dbg_load,
@@ -166,6 +167,7 @@ module CPU(
     assign dbg_ALU_output = ALU_output;
     assign dbg_mem_addr = mem_addr;
     assign dbg_mem_output = mem_output;
+    assign dbg_mem_select = mem_select;
     assign dbg_zero_flag = zero_flag;
     assign dbg_carrier_flag = carrier_flag;
     assign dbg_negative_flag = negative_flag;

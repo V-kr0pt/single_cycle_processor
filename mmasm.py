@@ -74,7 +74,7 @@ def main(args):
             machine_code.append(line_machine_code)
 
     # Save the machine code in a txt file
-    with open("machine_code.txt", "w") as file:
+    with open("src\machine_code\machine_code.txt", "w") as file:
         for line in machine_code:
             file.write(line + "\n")
     

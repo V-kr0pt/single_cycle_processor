@@ -23,6 +23,9 @@ module DataMemory (
         if (mem_write) begin
             memoria[address] <= data_in; // Escreve na memória
         end
+    end
+
+    always @(*) begin
         if (mem_read) begin
             data_out <= memoria[address]; // Lê da memória
         end

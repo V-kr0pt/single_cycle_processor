@@ -15,7 +15,7 @@ module ULA(
         negative_flag = 0;
     end
 
-    always @(posedge clk) begin
+    always @(*) begin
         case(op)
             4'b0000: {carrier_flag, result} = val_a + val_b; // ADD
             4'b0001: begin 
